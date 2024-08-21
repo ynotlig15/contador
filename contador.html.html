@@ -1,0 +1,102 @@
+contador.html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Contagem Regressiva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #282c34;
+            color: #ffffff;
+            text-align: center;
+        }
+        .container {
+            background: #20232a;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .countdown {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        .countdown div {
+            padding: 10px;
+            background: #61dafb;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .countdown div span {
+            display: block;
+            font-size: 1em;
+            font-weight: normal;
+        }
+        .description {
+            font-size: 1.2em;
+            color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contagem Regressiva</h1>
+        <div class="description">Tempo restante:</div>
+        <div class="countdown" id="countdown">
+            <div><span id="days">00</span> <span>Dia(s)</span></div>
+            <div><span id="hours">00</span> <span>Hora(s)</span></div>
+            <div><span id="minutes">00</span> <span>Minuto(s)</span></div>
+            <div><span id="seconds">00</span> <span>Segundo(s)</span></div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            // Define o tempo final para 33 dias e 2 horas a partir de agora
+            const endTime = new Date(new Date().getTime() + 33 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000); 
+            const now = new Date();
+            const timeRemaining = endTime - now;
+
+            if (timeRemaining <= 0) {
+                // Quando o tempo acaba, exibe "00" para todos os valores
+                document.getElementById('countdown').innerHTML = '<div>00 <span>Dia(s)</span></div><div>00 <span>Hora(s)</span></div><div>00 <span>Minuto(s)</span></div><div>00 <span>Segundo(s)</span></div>';
+                return; // A contagem terminou
+            }
+
+            // Calcula dias, horas, minutos e segundos restantes
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            // Atualiza o HTML com os valores calculados
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+
+            // Atualiza a cada segundo
+            setTimeout(updateCountdown, 1000);
+        }
+
+        // Inicializa o contador quando a página é carregada
+        window.onload = updateCountdown;
+    </script>
+</body>
+</html>
