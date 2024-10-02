@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de E-mails</title>
+</head>
+<body>
+    <h1>Gerador de E-mails com Pontos</h1>
+    <input type="text" id="email" placeholder="Digite seu email@gmail.com">
+    <button onclick="gerarEmails()">Gerar</button>
+    <h2>Emails Gerados:</h2>
+    <p id="contador"></p>
+    <ul id="resultados"></ul>
+
+    <script>
+        function gerarEmails() {
+            const email = document.getElementById('email').value;
+            const [nome, dominio] = email.split('@');
+            const resultados = document.getElementById('resultados');
+            const contador = document.getElementById('contador');
+            resultados.innerHTML = ''; // Limpa resultados anteriores
+            contador.textContent = ''; // Limpa o contador anterior
+
+            const emails = new Set(); // Usar um Set para evitar duplicatas
+
+            // Função recursiva para adicionar pontos
+            function adicionarVariacoes(current, index) {
+                if (index === nome.length) {
+                    emails.add(current + '@' + dominio);
+                    return;
+                }
+
+                // Sem ponto
+                adicionarVariacoes(current + nome[index], index + 1);
+                // Com ponto
+                adicionarVariacoes(current + nome[index] + '.', index + 1);
+            }
+
+            adicionarVariacoes('', 0);
+
+            // Limitar o número de emails exibidos
+            const maxEmails = 4096;
+            let count = 0;
+
+            emails.forEach(emailGerado => {
+                if (count < maxEmails) {
+                    const li = document.createElement('li');
+                    li.textContent = emailGerado;
+                    resultados.appendChild(li);
+                    count++;
+                }
+            });
+
+            // Exibe o contador de emails gerados
+            contador.textContent = `Total de e-mails gerados: ${emails.size}`;
+        }
+    </script>
+</body>
+</html>
